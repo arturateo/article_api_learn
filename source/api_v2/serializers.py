@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from webapp.models import Article
-
+from webapp.models import Comment
 
 class ArticleSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -38,6 +38,20 @@ class ArticleModelSerializer(serializers.ModelSerializer):
         model = Article
         fields = "__all__"
         read_only_fields = ("id", "author", "created_at", "updated_at")
+
+
+    def validate_title(self, value):
+        if len(value) < 5:
+            raise ValidationError("Длина меньше 5 символов не разрешена")
+        return value
+
+
+class CommentModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        read_only_fields = ("id", "author")
 
 
     def validate_title(self, value):

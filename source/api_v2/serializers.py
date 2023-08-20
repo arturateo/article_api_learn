@@ -44,3 +44,17 @@ class ArticleModelSerializer(serializers.ModelSerializer):
         if len(value) < 5:
             raise ValidationError("Длина меньше 5 символов не разрешена")
         return value
+
+
+class CommentModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        read_only_fields = ("id", "author")
+
+
+    def validate_title(self, value):
+        if len(value) < 5:
+            raise ValidationError("Длина меньше 5 символов не разрешена")
+        return value
